@@ -79,10 +79,27 @@ def upsert_silver_tickets(con: duckdb.DuckDBPyConnection, day: str) -> dict:
     # Write this batch's changes to Silver.
     # A delete arrives as a change with is_deleted = true and every PII column null.
     con.execute("""
-        INSERT INTO silver_tickets
-        SELECT ticket_id, user_id, subject, body, priority, status, category,
-               created_at, updated_at, is_deleted, _lsn, _batch_id
-        FROM _latest_changes
+        MERGE INTO silver_tickets AS target
+        USING _latest_changes AS src
+        ON target.ticket_id = src.ticket_id
+        WHEN MATCHED AND src._lsn > target._lsn THEN
+            UPDATE SET
+                user_id = src.user_id,
+                subject = src.subject,
+                body = src.body,
+                priority = src.priority,
+                status = src.status,
+                category = src.category,
+                created_at = src.created_at,
+                updated_at = src.updated_at,
+                is_deleted = src.is_deleted,
+                _lsn = src._lsn,
+                _batch_id = src._batch_id
+        WHEN NOT MATCHED THEN
+            INSERT (ticket_id, user_id, subject, body, priority, status, category,
+                    created_at, updated_at, is_deleted, _lsn, _batch_id)
+            VALUES (src.ticket_id, src.user_id, src.subject, src.body, src.priority, src.status, src.category,
+                    src.created_at, src.updated_at, src.is_deleted, src._lsn, src._batch_id)
     """)
     (n_rows,) = con.execute("SELECT count(*) FROM silver_tickets").fetchone()
     return {"changes_in_batch": n_changes, "silver_rows": n_rows}
