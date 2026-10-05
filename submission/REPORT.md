@@ -4,8 +4,8 @@ Phần phân tích tối đa một trang, không tính output ở phần 5.
 Định dạng tham chiếu và phạm vi tính trang: [SUBMISSION.md](../docs/SUBMISSION.md).
 
 **Họ tên / MSSV:** Nguyễn Đức Minh / 2A202602891
-**Repo:** https://github.com/minhnd1307-tech/K4-Track02-Day17-Data-Pipeline-Engineering
-**Commit bài nộp:** 13e0f0fcc4dee72202f3377f60e429323334cf6e
+**Repo:** https://github.com/minhnd1307-tech/K4-Track02-Day17-NguyenDucMinh-2A202602891-DataPipelineEngineering
+**Commit bài nộp:** 962ac07bb6d02e113ccabb3d5d375ffe55663d72
 **AI đã dùng và phạm vi hỗ trợ (hoặc không dùng):** Claude Code (hỗ trợ phân tích triệu chứng lỗi, thiết kế câu lệnh SQL MERGE, đo lường lateness và triển khai cache cho bước LLM)
 **Nguồn tham khảo khác (nếu có):** Slide bài giảng K4 Day 17 (Data Pipeline Engineering), tài liệu DuckDB và dbt Core documentation.
 
